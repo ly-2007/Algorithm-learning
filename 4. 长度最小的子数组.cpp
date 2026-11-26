@@ -31,10 +31,36 @@ public:
     }
 };
 
+//我在按照动画自己手打的过程中使用if来判断大于target,经询问ai，明白这样会导致只收榨一个单位，而实际应该尽可能收缩窗口
+//只需要把if修改为while
+//时间复杂度为O(n)
 class Solution2
-{public:
-    int minSubArrayLen(int target,vector<int> &nums){
-        
-    }
+{
+public:
+    int minSubArrayLen(int target, vector<int> &nums)
+    {
+        int subLength = 0;
+        int start = 0;
+        int sum = 0;
+        for (int tail = 0; tail < nums.size(); tail++)
+        {
+            sum += nums[tail];
+            //更新长度
+            while (sum >= target)
+            {
+                if (subLength == 0)
+                {
+                    subLength = tail - start + 1;
+                }
+                else
+                {
+                    subLength = subLength < (tail - start + 1) ? subLength : (tail - start + 1);
+                }
+                sum -= nums[start];
+                start++;
+            }
+        }
 
+        return subLength;
+    }
 };
